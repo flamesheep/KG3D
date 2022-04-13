@@ -12,7 +12,7 @@ public class MoveLeft : MonoBehaviour
 
     void Start()
     {
-        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>()
+        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     

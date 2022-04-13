@@ -17,11 +17,16 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem ps_explosion;
     public ParticleSystem ps_dirty;
 
+    public AudioClip ac_jump;
+    public AudioClip ac_explision;
+    private AudioSource as_player;
+
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
         Physics.gravity *= gravityModifier; // 等同 Physics.gravity * Physics.gravity = gravityModifier
         playerAnim = GetComponent<Animator>();
+        as_player = GetComponent<AudioSource>();
     }
 
     
@@ -32,6 +37,7 @@ public class PlayerController : MonoBehaviour
             isOnground = false;
             playerAnim.SetTrigger("Jump_trig");
             ps_dirty.Stop();
+            as_player.PlayOneShot(ac_jump, 1.0f);
         }
     }
 
@@ -42,13 +48,14 @@ public class PlayerController : MonoBehaviour
             ps_dirty.Play();
         } else if (other.gameObject.CompareTag("OOO")){
             gameOver = true; //因為碰撞到障礙物，表示遊戲結束
-            print("遊戲結束！");  //在 #Console 視窗顯示 "遊戲結束"
+            playerAnim.SetBool("Death_b", true);
+            playerAnim.SetInteger("DeathType_int", 1);
+            ps_explosion.Play();
+            ps_dirty.Stop();
+            as_player.PlayOneShot(ac_explision, 1.0f);
         }
 
-        playerAnim.SetBool("Death_b", true);
-        playerAnim.SetInteger("DeathType_int", 1);
-        ps_explosion.Play();
-        ps_dirty.Stop();
+        
 
 
 
